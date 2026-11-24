@@ -12,7 +12,7 @@ Proyek ini mendemonstrasikan evaluasi keamanan komparatif antara sistem Linux *d
 
 ## 👥 Anggota Kelompok
 1. **Rafi Dzaka Pratama P** (NIM: 123240104) &ndash; *Project Lead & Hardening Engineer*
-2. [Nama Anggota 2] (NIM: [NIM 2]) &ndash; *Red Team Penetration Tester*
+2. **Aushaf Fathin Irsyad Nabil** (NIM: 123240092) &ndash; *Red Team Penetration Tester*
 3. [Nama Anggota 3] (NIM: [NIM 3]) &ndash; *Baseline Engineer*
 4. [Nama Anggota 4] (NIM: [NIM 4]) &ndash; *SIEM & Monitoring Engineer*
 
