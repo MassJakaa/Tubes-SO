@@ -1,0 +1,15 @@
+# Ignore large binaries and installers
+*.exe
+VirtualBox-Installer.exe
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+
+# System and logs
+*.log
+.DS_Store
+Thumbs.db
