@@ -352,7 +352,9 @@ def create_report():
 
     add_h2("6.2 Lampiran Pendukung")
     doc.add_paragraph(
+        "• Repositori Kode & Skrip Otomasi: https://github.com/MassJakaa/Tubes-SO\n"
         "• Direktori Skrip Otomasi: ./scripts/ (01_unhardened, 02_hardened, 03_attacker, 04_siem, 05_audit)\n"
+        "• Dashboard Visual SOC: ./dashboard/ (CyberShield Multi-Node Web UI)\n"
         "• Konfigurasi Sistem: Terlampir lengkap pada dokumen Markdown dan repositori proyek."
     )
 

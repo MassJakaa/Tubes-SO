@@ -255,7 +255,7 @@ Pengujian dilakukan berdasarkan 4 spesifikasi pengujian resmi yang telah ditentu
 | 4 | [Nama Anggota 4] | [NIM] | SIEM & Monitoring Engineer | Mengonfigurasi Rsyslog server pada Node 4, skrip live-monitoring, dan perapihan dokumentasi laporan. |
 
 ### 6.2 Lampiran Pendukung
-- Repositori Kode & Skrip Otomasi: `https://github.com/[username]/TugasBesar-SistemOperasi-Hardening`
+- Repositori Kode & Skrip Otomasi: `https://github.com/MassJakaa/Tubes-SO`
 - File Konfigurasi Inti:
   - `/etc/ssh/sshd_config`
   - `/etc/fail2ban/jail.local`
