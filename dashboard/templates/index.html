@@ -34,13 +34,19 @@
               CyberShield Suite
               <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Tugas Besar SisOp</span>
             </h1>
-            <p class="text-xs text-slate-400">Analisis Komparatif OS Hardening & Security Audit (4 Laptop Multi-Node)</p>
+            <p class="text-xs text-slate-400">Analisis Komparatif OS Hardening & Security Audit (Multi-Node)</p>
           </div>
         </div>
 
-        <div class="flex items-center space-x-2 text-xs font-mono">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-          <span class="text-slate-300">Cluster Wi-Fi Active</span>
+        <div class="flex items-center space-x-3">
+          <button onclick="openConfigModal()" class="px-3 py-1.5 text-xs font-bold bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg transition flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-gear"></i> Ubah IP Node
+          </button>
+          <div class="hidden sm:flex items-center space-x-2 text-xs font-mono bg-slate-800/80 px-2.5 py-1.5 rounded-lg border border-slate-700">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span class="text-slate-300">Target IP:</span>
+            <span id="header-target-ip" class="text-cyan-400 font-bold">192.168.1.31</span>
+          </div>
         </div>
 
       </div>
@@ -63,6 +69,49 @@
     </div>
   </header>
 
+  <!-- MODAL: UBAH IP NODE -->
+  <div id="config-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-network-wired text-cyan-400"></i>
+          Konfigurasi Alamat IP 4 Node
+        </h3>
+        <button onclick="closeConfigModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+      </div>
+
+      <p class="text-xs text-slate-400">
+        Masukkan IP asli masing-masing laptop yang didapat dari Wi-Fi / Hotspot saat ini. Semua data visual akan otomatis berubah mengikuti IP ini:
+      </p>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Laptop 1: Attacker (Kali/Ubuntu)</label>
+          <input type="text" id="cfg-node1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-red-400 font-mono font-bold focus:border-red-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Laptop 2: Target Hardened (Aman)</label>
+          <input type="text" id="cfg-node2" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-emerald-400 font-mono font-bold focus:border-emerald-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Laptop 3: Target Unhardened (Rentan)</label>
+          <input type="text" id="cfg-node3" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-amber-400 font-mono font-bold focus:border-amber-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Laptop 4: SIEM Monitoring (Log Hub)</label>
+          <input type="text" id="cfg-node4" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-blue-400 font-mono font-bold focus:border-blue-500 focus:outline-none">
+        </div>
+      </div>
+
+      <div class="flex justify-end space-x-2 pt-2 border-t border-slate-800">
+        <button onclick="closeConfigModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-lg transition">Batal</button>
+        <button onclick="saveNodeConfig()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-lg transition flex items-center gap-1.5">
+          <i class="fa-solid fa-check"></i> Simpan & Terapkan
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- MAIN CONTAINER -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
@@ -71,7 +120,6 @@
     <!-- ======================================================== -->
     <div id="view-node-1" class="hidden space-y-6">
       
-      <!-- Banner Red Team -->
       <div class="bg-gradient-to-r from-red-950/80 to-slate-900 border border-red-500/40 rounded-xl p-5 shadow-xl shadow-red-950/20">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div class="flex items-center space-x-3.5">
@@ -84,13 +132,13 @@
                 <span class="px-2 py-0.5 text-[10px] bg-red-600 text-white font-bold rounded">PEN-TEST CONSOLE</span>
               </h2>
               <p class="text-xs text-red-200/80 mt-0.5">
-                Konsol pengendali serangan penetrasi (Reconnaissance Nmap & SSH Brute Force Hydra) ke Node Target
+                Konsol pengendali serangan penetrasi (Nmap Reconnaissance & SSH Brute Force Hydra)
               </p>
             </div>
           </div>
           <div class="flex items-center space-x-2 text-xs bg-slate-950/80 px-3 py-2 rounded-lg border border-red-500/30 font-mono">
-            <span class="text-slate-400">Attacker IP:</span>
-            <span class="text-red-400 font-bold">192.168.1.34 (Kali Linux)</span>
+            <span class="text-slate-400">Attacker Node IP:</span>
+            <span id="v1-node1-ip" class="text-red-400 font-bold">192.168.1.34</span>
           </div>
         </div>
       </div>
@@ -98,55 +146,51 @@
       <!-- Attack Launchpad Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         
-        <!-- Action 1: Ping Test -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between hover:border-slate-700 transition">
           <div>
             <span class="text-xs font-bold text-slate-400 uppercase">Uji 1 &bull; Konektivitas</span>
             <h4 class="text-sm font-bold text-white mt-1">Ping Sweep Latency</h4>
             <p class="text-xs text-slate-400 mt-1">Verifikasi latensi jaringan antar node (&lt; 5 ms)</p>
           </div>
-          <button onclick="runAttack('ping', '192.168.1.31')" class="mt-4 w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-lg transition flex items-center justify-center gap-2">
+          <button onclick="triggerAttack('ping')" class="mt-4 w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-lg transition flex items-center justify-center gap-2">
             <i class="fa-solid fa-wave-square"></i> Jalankan Uji Ping
           </button>
         </div>
 
-        <!-- Action 2: Nmap Scan -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between hover:border-slate-700 transition">
           <div>
             <span class="text-xs font-bold text-slate-400 uppercase">Uji 2 &bull; Port Recon</span>
             <h4 class="text-sm font-bold text-white mt-1">Nmap Port Scanning</h4>
-            <p class="text-xs text-slate-400 mt-1">Pindai port terbuka pada target Unhardened vs Hardened</p>
+            <p class="text-xs text-slate-400 mt-1">Pindai port terbuka Unhardened vs Hardened</p>
           </div>
           <div class="grid grid-cols-2 gap-2 mt-4">
-            <button onclick="runAttack('nmap', 'Unhardened (Node 3)')" class="py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold text-xs rounded-lg transition">
+            <button onclick="triggerAttack('nmap_node3')" class="py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold text-xs rounded-lg transition">
               Scan Node 3
             </button>
-            <button onclick="runAttack('nmap', 'Hardened (Node 2)')" class="py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-cyan-400 font-bold text-xs rounded-lg transition">
+            <button onclick="triggerAttack('nmap_node2')" class="py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-cyan-400 font-bold text-xs rounded-lg transition">
               Scan Node 2
             </button>
           </div>
         </div>
 
-        <!-- Action 3: Hydra Unhardened -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between hover:border-slate-700 transition">
           <div>
             <span class="text-xs font-bold text-amber-400 uppercase">Uji 3 &bull; Exploitation</span>
             <h4 class="text-sm font-bold text-white mt-1">Hydra SSH (Unhardened)</h4>
-            <p class="text-xs text-slate-400 mt-1">Tebak password akun 'korban' pada sistem rentan tanpa firewall</p>
+            <p class="text-xs text-slate-400 mt-1">Tebak password akun 'korban' tanpa firewall</p>
           </div>
-          <button onclick="runAttack('hydra_unhardened', '192.168.1.31')" class="mt-4 w-full py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-lg transition flex items-center justify-center gap-2">
+          <button onclick="triggerAttack('hydra_unhardened')" class="mt-4 w-full py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-lg transition flex items-center justify-center gap-2">
             <i class="fa-solid fa-unlock-keyhole"></i> Serang Node 3
           </button>
         </div>
 
-        <!-- Action 4: Hydra Hardened -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between hover:border-slate-700 transition">
           <div>
             <span class="text-xs font-bold text-red-400 uppercase">Uji 4 &bull; Fail2ban Test</span>
             <h4 class="text-sm font-bold text-white mt-1">Hydra SSH (Hardened)</h4>
-            <p class="text-xs text-slate-400 mt-1">Uji pertahanan auto-ban Fail2ban setelah 3x gagal login</p>
+            <p class="text-xs text-slate-400 mt-1">Uji auto-ban Fail2ban setelah 3x gagal login</p>
           </div>
-          <button onclick="runAttack('hydra_hardened', '192.168.1.20')" class="mt-4 w-full py-2 bg-red-600 hover:bg-red-500 text-white font-bold text-xs rounded-lg transition flex items-center justify-center gap-2">
+          <button onclick="triggerAttack('hydra_hardened')" class="mt-4 w-full py-2 bg-red-600 hover:bg-red-500 text-white font-bold text-xs rounded-lg transition flex items-center justify-center gap-2">
             <i class="fa-solid fa-shield-virus"></i> Serang Node 2
           </button>
         </div>
@@ -162,11 +206,11 @@
             <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
             <span class="text-xs font-mono font-bold text-slate-300 ml-2" id="attack-title">Live Pen-Test Terminal Output</span>
           </div>
-          <span class="text-xs text-slate-400 font-mono">Status: Ready to Execute</span>
+          <span class="text-xs text-slate-400 font-mono">Status: Ready</span>
         </div>
         <pre id="attack-console" class="bg-slate-950 p-4 rounded-lg font-mono text-xs text-cyan-300 overflow-x-auto min-h-[160px] leading-relaxed border border-slate-800">
 [+] CyberShield Pen-Test Console Ready.
-[+] Silakan pilih tombol aksi di atas untuk meluncurkan pengujian serangan!</pre>
+[+] Silakan klik tombol aksi di atas untuk meluncurkan pengujian serangan!</pre>
       </div>
 
     </div>
@@ -188,7 +232,7 @@
               <span class="px-2 py-0.5 text-[10px] bg-red-600 text-white font-black rounded">FAIL2BAN ACTIVE</span>
             </h3>
             <p class="text-xs text-red-300/80 mt-0.5">
-              Attacker IP <span class="font-mono font-bold text-white bg-red-900/60 px-1.5 py-0.5 rounded border border-red-500/40">192.168.1.34</span> telah di-drop otomatis oleh iptables kernel setelah 3 kali gagal autentikasi.
+              Attacker IP <span id="v2-banned-ip" class="font-mono font-bold text-white bg-red-900/60 px-1.5 py-0.5 rounded border border-red-500/40">192.168.1.34</span> telah di-drop otomatis oleh iptables kernel setelah 3 kali gagal autentikasi.
             </p>
           </div>
         </div>
@@ -235,7 +279,7 @@
             <span class="text-xs text-slate-400">Banned IP</span>
             <span class="text-xs text-red-400 font-bold bg-red-500/10 px-1.5 py-0.5 rounded">AUTO-BAN</span>
           </div>
-          <p class="text-[11px] text-slate-400 mt-2">IP Terkunci: <span class="font-mono text-red-300 font-bold">192.168.1.34</span></p>
+          <p class="text-[11px] text-slate-400 mt-2">IP Terkunci: <span id="v2-banned-text" class="font-mono text-red-300 font-bold">192.168.1.34</span></p>
         </div>
 
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-sm">
@@ -324,7 +368,6 @@
     <!-- ======================================================== -->
     <div id="view-node-4" class="hidden space-y-6">
 
-      <!-- Banner SIEM -->
       <div class="bg-gradient-to-r from-blue-950 to-slate-900 border border-blue-500/40 rounded-xl p-5 shadow-xl shadow-blue-950/20">
         <div class="flex items-center space-x-3.5">
           <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30 text-xl flex-shrink-0">
@@ -345,27 +388,27 @@
       <!-- Network Topology Visualizer -->
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
         <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
-          <i class="fa-solid fa-network-wired text-cyan-400"></i> Topologi Komunikasi Multi-Node (192.168.1.0/24)
+          <i class="fa-solid fa-network-wired text-cyan-400"></i> Topologi Komunikasi Multi-Node
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-center text-xs">
           <div class="bg-slate-950 p-3 rounded-lg border border-red-500/40">
             <span class="font-bold text-red-400 block mb-1">NODE 1: ATTACKER</span>
-            <span class="font-mono text-slate-300">192.168.1.34</span>
+            <span id="top-node1" class="font-mono text-slate-300 font-bold">192.168.1.34</span>
             <span class="block text-[10px] text-red-400 mt-1">Kali Linux</span>
           </div>
           <div class="bg-slate-950 p-3 rounded-lg border border-emerald-500/40">
             <span class="font-bold text-emerald-400 block mb-1">NODE 2: HARDENED</span>
-            <span class="font-mono text-slate-300">192.168.1.20</span>
+            <span id="top-node2" class="font-mono text-slate-300 font-bold">192.168.1.20</span>
             <span class="block text-[10px] text-emerald-400 mt-1">Protected (Score 84)</span>
           </div>
           <div class="bg-slate-950 p-3 rounded-lg border border-amber-500/40">
             <span class="font-bold text-amber-400 block mb-1">NODE 3: UNHARDENED</span>
-            <span class="font-mono text-slate-300">192.168.1.31</span>
+            <span id="top-node3" class="font-mono text-slate-300 font-bold">192.168.1.31</span>
             <span class="block text-[10px] text-amber-400 mt-1">Baseline (Score 55)</span>
           </div>
           <div class="bg-slate-950 p-3 rounded-lg border border-blue-500/40">
             <span class="font-bold text-blue-400 block mb-1">NODE 4: SIEM HUB</span>
-            <span class="font-mono text-slate-300">192.168.1.40</span>
+            <span id="top-node4" class="font-mono text-slate-300 font-bold">192.168.1.40</span>
             <span class="block text-[10px] text-blue-400 mt-1">Rsyslog Collector</span>
           </div>
         </div>
@@ -401,7 +444,7 @@
             </tr>
           </thead>
           <tbody id="logs-table" class="divide-y divide-slate-800/60 font-mono text-slate-300">
-            <!-- Dynamic rows inserted via fetchStats -->
+            <!-- Dynamic rows -->
           </tbody>
         </table>
       </div>
@@ -409,10 +452,16 @@
 
   </main>
 
-  <!-- SCRIPT LOGIC -->
+  <!-- JAVASCRIPT LOGIC -->
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const activeRole = parseInt(urlParams.get('role')) || {{ active_role }};
+    let globalConfig = {
+      node1_ip: "{{ config.node1_ip }}",
+      node2_ip: "{{ config.node2_ip }}",
+      node3_ip: "{{ config.node3_ip }}",
+      node4_ip: "{{ config.node4_ip }}"
+    };
 
     function showRoleView(role) {
       for (let i = 1; i <= 4; i++) {
@@ -434,6 +483,57 @@
       }
     }
     showRoleView(activeRole);
+
+    function updateIPDisplays(cfg) {
+      globalConfig = cfg;
+      if (document.getElementById('header-target-ip')) document.getElementById('header-target-ip').innerText = cfg.node3_ip;
+      if (document.getElementById('v1-node1-ip')) document.getElementById('v1-node1-ip').innerText = cfg.node1_ip;
+      if (document.getElementById('v2-banned-ip')) document.getElementById('v2-banned-ip').innerText = cfg.node1_ip;
+      if (document.getElementById('v2-banned-text')) document.getElementById('v2-banned-text').innerText = cfg.node1_ip;
+      if (document.getElementById('top-node1')) document.getElementById('top-node1').innerText = cfg.node1_ip;
+      if (document.getElementById('top-node2')) document.getElementById('top-node2').innerText = cfg.node2_ip;
+      if (document.getElementById('top-node3')) document.getElementById('top-node3').innerText = cfg.node3_ip;
+      if (document.getElementById('top-node4')) document.getElementById('top-node4').innerText = cfg.node4_ip;
+
+      // Inputs in modal
+      if (document.getElementById('cfg-node1')) document.getElementById('cfg-node1').value = cfg.node1_ip;
+      if (document.getElementById('cfg-node2')) document.getElementById('cfg-node2').value = cfg.node2_ip;
+      if (document.getElementById('cfg-node3')) document.getElementById('cfg-node3').value = cfg.node3_ip;
+      if (document.getElementById('cfg-node4')) document.getElementById('cfg-node4').value = cfg.node4_ip;
+    }
+    updateIPDisplays(globalConfig);
+
+    function openConfigModal() {
+      document.getElementById('config-modal').classList.remove('hidden');
+    }
+    function closeConfigModal() {
+      document.getElementById('config-modal').classList.add('hidden');
+    }
+
+    async function saveNodeConfig() {
+      const newCfg = {
+        node1_ip: document.getElementById('cfg-node1').value.trim() || globalConfig.node1_ip,
+        node2_ip: document.getElementById('cfg-node2').value.trim() || globalConfig.node2_ip,
+        node3_ip: document.getElementById('cfg-node3').value.trim() || globalConfig.node3_ip,
+        node4_ip: document.getElementById('cfg-node4').value.trim() || globalConfig.node4_ip
+      };
+      try {
+        const res = await fetch('/api/config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newCfg)
+        });
+        const data = await res.json();
+        if (data.config) {
+          updateIPDisplays(data.config);
+          closeConfigModal();
+          alert('Alamat IP seluruh node berhasil diperbarui!');
+          fetchStats();
+        }
+      } catch (err) {
+        alert('Gagal menyimpan konfigurasi IP: ' + err);
+      }
+    }
 
     let lynisChart = null;
     function initChart(scores) {
@@ -480,8 +580,8 @@
       try {
         const res = await fetch('/api/stats');
         const data = await res.json();
+        if (data.config) updateIPDisplays(data.config);
 
-        // Update Log Table
         if (data.logs) {
           let rows = '';
           data.logs.forEach(l => {
@@ -512,23 +612,32 @@
       }
     }
 
-    async function runAttack(actionType, target) {
+    async function triggerAttack(action) {
+      let targetIP = globalConfig.node3_ip;
+      let actionType = action;
+
+      if (action === 'nmap_node3') { actionType = 'nmap'; targetIP = globalConfig.node3_ip; }
+      else if (action === 'nmap_node2') { actionType = 'nmap'; targetIP = globalConfig.node2_ip; }
+      else if (action === 'hydra_hardened') { targetIP = globalConfig.node2_ip; }
+      else if (action === 'hydra_unhardened') { targetIP = globalConfig.node3_ip; }
+      else if (action === 'ping') { targetIP = globalConfig.node3_ip; }
+
       const consoleBox = document.getElementById('attack-console');
       const titleBox = document.getElementById('attack-title');
-      consoleBox.innerText = `[*] Sedang menjalankan aksi [${actionType}] ke target ${target}... Mohon tunggu sebentar...`;
+      consoleBox.innerText = `[*] Sedang mengeksekusi [${actionType}] ke sasaran ${targetIP}...\n[*] Mohon tunggu 1-2 detik...`;
       titleBox.innerText = `Menjalankan: ${actionType.toUpperCase()}`;
-      
+
       try {
         const res = await fetch(`/api/action/${actionType}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ target: target })
+          body: JSON.stringify({ target: targetIP })
         });
         const result = await res.json();
         titleBox.innerText = result.title || 'Hasil Eksekusi Serangan';
         consoleBox.innerText = result.output;
       } catch (err) {
-        consoleBox.innerText = `[!] Error saat menjalankan aksi: ${err}`;
+        consoleBox.innerText = `[!] Terjadi kendala eksekusi: ${err}`;
       }
     }
 

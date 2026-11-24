@@ -5,10 +5,15 @@
 # Digunakan untuk menjalankan simulasi serangan ke Node Unhardened & Hardened
 # ==============================================================================
 
-# GANTI IP BERIKUT SESUAI DENGAN IP MASING-MASING LAPTOP ANGGOTA
-IP_HARDENED="192.168.43.20"
-IP_UNHARDENED="192.168.43.30"
-TARGET_USER="korban"
+# GANTI IP BERIKUT ATAU GUNAKAN MENU 6 UNTUK SIMPAN PERMANEN
+CONFIG_FILE="$(dirname "$0")/.target_config"
+if [ -f "$CONFIG_FILE" ]; then
+    source "$CONFIG_FILE"
+fi
+
+IP_HARDENED="${IP_HARDENED:-192.168.1.20}"
+IP_UNHARDENED="${IP_UNHARDENED:-192.168.1.31}"
+TARGET_USER="${TARGET_USER:-korban}"
 
 # Direktori log hasil pengujian
 OUTPUT_DIR="./hasil_pengujian"
@@ -102,9 +107,21 @@ test_hydra_hardened() {
 }
 
 change_ip() {
-    read -p "Masukkan IP Target Hardened baru   : " IP_HARDENED
-    read -p "Masukkan IP Target Unhardened baru : " IP_UNHARDENED
-    read -p "Masukkan Target Username baru      : " TARGET_USER
+    read -p "Masukkan IP Target Hardened baru   : " NEW_HARDENED
+    read -p "Masukkan IP Target Unhardened baru : " NEW_UNHARDENED
+    read -p "Masukkan Target Username baru      : " NEW_USER
+
+    [ -n "$NEW_HARDENED" ] && IP_HARDENED="$NEW_HARDENED"
+    [ -n "$NEW_UNHARDENED" ] && IP_UNHARDENED="$NEW_UNHARDENED"
+    [ -n "$NEW_USER" ] && TARGET_USER="$NEW_USER"
+
+    cat << EOF > "$CONFIG_FILE"
+IP_HARDENED="$IP_HARDENED"
+IP_UNHARDENED="$IP_UNHARDENED"
+TARGET_USER="$TARGET_USER"
+EOF
+    echo "[+] Konfigurasi IP berhasil disimpan secara permanen di $CONFIG_FILE!"
+    sleep 1
 }
 
 while true; do
